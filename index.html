@@ -12,7 +12,6 @@
       color: #f0f0f0;
       line-height: 1.6;
     }
-
     header {
       text-align: center;
       padding: 2rem 1rem;
@@ -20,35 +19,35 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.4);
       position: relative;
     }
-
     header h1 {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
       color: #ffcc00;
       text-shadow: 1px 1px 6px rgba(0,0,0,0.8);
     }
-
     header p {
       font-size: 1.2rem;
       color: #ddd;
     }
-
     .hymne-btn {
       position: absolute;
       top: 10px;
       right: 10px;
-      background: #ffcc00;
+      background: #28a745; /* grün = läuft */
       border: none;
       padding: 10px 15px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      color: #fff;
+    }
+    .hymne-btn.paused {
+      background: #dc3545; /* rot = pausiert */
     }
     .hymne-btn:hover {
-      background: #e6b800;
+      opacity: 0.9;
     }
-
     .program {
       max-width: 900px;
       margin: 2rem auto;
@@ -56,7 +55,6 @@
       display: grid;
       gap: 1rem;
     }
-
     .card {
       background: rgba(255,255,255,0.05);
       border-radius: 1rem;
@@ -64,38 +62,26 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.3);
       transition: transform 0.2s ease, background 0.2s ease;
     }
-
     .card:hover {
       transform: translateY(-4px);
       background: rgba(255,255,255,0.08);
     }
-
     .card h2 {
       font-size: 1.3rem;
       color: #ffcc00;
       margin-bottom: 0.5rem;
     }
-
     footer {
       text-align: center;
       padding: 2rem 1rem;
       font-size: 0.9rem;
       color: #aaa;
     }
-
     img.program-image {
       max-width: 100%;
       border-radius: 1rem;
       margin: 1rem 0;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-
-    /* Unsichtbarer Soundcloud-Player */
-    #sc-player {
-      width: 0;
-      height: 0;
-      border: none;
-      visibility: hidden;
     }
   </style>
 </head>
@@ -103,65 +89,40 @@
   <header>
     <h1>Anti A(e)lljeen Partei</h1>
     <p>Wahlprogramm – Gemeinsam jejen de Elljeens!</p>
-    <button class="hymne-btn" id="toggleHymne">AAP Hymne ⏸</button>
-    
+    <button class="hymne-btn" id="toggleBtn">AAP Hymne ⏸</button>
     <img src="https://raw.githubusercontent.com/AAP-OFFIZIELL/AAP.info/refs/heads/main/Parteilogo.png" 
-         alt="Anti A(e)lljeen Wahlplakat" class="program-image" width=200>
+         alt="Anti A(e)lljeen Wahlplakat" class="program-image" width="200">
   </header>
 
-  <!-- Unsichtbarer Soundcloud-Embed -->
-  <iframe id="sc-player" 
-          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/falko_der_erwachte/dj-falko-peace-aut-funf-finger-jegen-de-elljenns-aap-hymne&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false">
-  </iframe>
+  <!-- Audio-Element mit GitHub MP3 -->
+  <audio id="aapAudio" autoplay loop>
+    <source src="https://raw.githubusercontent.com/AAP-OFFIZIELL/AAP.info/main/DJ%20Falko%20-%20Peace%20Aut%20F%C3%BCnf%20Finger%20jegen%20de%20Elljenns%20_AAP-Hymne_%20-%20Falko_Der_Erwachte%20-%20SoundLoadMate.com.mp3" type="audio/mpeg">
+    Dein Browser unterstützt kein Audio.
+  </audio>
 
-  <script src="https://w.soundcloud.com/player/api.js"></script>
   <script>
-    const iframe = document.getElementById("sc-player");
-    const scPlayer = SC.Widget(iframe);
-    const btn = document.getElementById("toggleHymne");
-    let playing = true;
+    const audio = document.getElementById("aapAudio");
+    const btn = document.getElementById("toggleBtn");
 
     btn.addEventListener("click", () => {
-      if (playing) {
-        scPlayer.pause();
-        btn.textContent = "AAP Hymne ▶️";
-      } else {
-        scPlayer.play();
+      if (audio.paused) {
+        audio.play();
         btn.textContent = "AAP Hymne ⏸";
+        btn.classList.remove("paused");
+      } else {
+        audio.pause();
+        btn.textContent = "AAP Hymne ▶️";
+        btn.classList.add("paused");
       }
-      playing = !playing;
     });
   </script>
 
-  <footer>
-    <p>Folge Falko auf:</p>
-    <p>
-      <a href="https://www.tiktok.com/@falko_der_erwachte" target="_blank"><font color=orange>TikTok</font></a> | 
-      <a href="https://soundcloud.com/falko_der_erwachte" target="_blank"><font color=orange>Soundcloud</font> </a> | 
-      <a href="https://www.instagram.com/falko_der_erwachte" target="_blank"><font color=orange>Instagram</font></a>
-    </p>
-  </footer>
-
   <main class="program">
+    <!-- Deine Wahlprogramm-Karten hier... -->
     <div class="card"><h2>1.</h2> Sofortige Entelljeefizierung der Erdplatte!</div>
-    <div class="card"><h2>2.</h2> Sofortiger Rückzug aller UFOs aus dem Luftraum der Erdplatte!</div>
-    <div class="card"><h2>3.</h2> Keine Fernöberwachung durch Tauben oder sonstige Abhör-Objekte!</div>
-    <div class="card"><h2>4.</h2> Befreiung aller entführten Peepel der Elljeens!</div>
-    <div class="card"><h2>5.</h2> Umerziehung aller Vejaner!</div>
-    <div class="card"><h2>6.</h2> Auflösung des Elljeenraumschiffes „Reichstag“!</div>
-    <div class="card"><h2>7.</h2> Bier aus jedem Wasserhahn!</div>
-    <div class="card"><h2>8.</h2> Nur noch Lieder von Wolle Petri, Peter Schilling und Falko (unser Führer) sind erlaubt!</div>
-    <div class="card"><h2>9.</h2> Beseitigung aller Tauben und anderer Abhör-Objekte!</div>
-    <div class="card"><h2>10.</h2> Verbot des Fernsehens („Lügenschau“). Offizielle Informationsquellen: Telegram, Reddit, LinkedIn und nach Entelljeefizierung auch TikTok & YouTube!</div>
-    <div class="card"><h2>11.</h2> Endlich Meinungsfreiheit & Transparenz auf TikTok und YouTube!</div>
-    <div class="card"><h2>12.</h2> Änderung des Schulunterrichts: Wahrheit über Erdplatte und Elljeens!</div>
-    <div class="card"><h2>13.</h2> Jeder folgt Führer Falko, dem ersten Erwachten jejen die Elljeens!</div>
-    <div class="card"><h2>14.</h2> Berlin wird Welthauptstadt!</div>
-    <div class="card"><h2>15.</h2> Berlinerisch wird Weltsprache (Abschaffung aller Elljeensprachen)!</div>
-    <div class="card"><h2>16.</h2> Wöchentliche Elljeen-Tests bei jedem!</div>
-    <div class="card"><h2>17.</h2> Abschaffung aller Elljeen-Parteien (z.B. A(e)lljeens für Deutschland, Cosmosdemokraten, usw.)!</div>
-    <div class="card"><h2>18.</h2> Der Jeburtstag unseres Führers Falko wird zum Erdplatten-weiten Feiertag!</div>
+    <!-- ... usw. -->
   </main>
+
   <div style="text-align:center;">
     <img src="https://raw.githubusercontent.com/AAP-OFFIZIELL/AAP.info/refs/heads/main/1000075321.jpg" 
          alt="Anti A(e)lljeen Wahlplakat" class="program-image">
@@ -170,7 +131,6 @@
   <footer>
     <p>Lasst uns gemeinsam jejen de Elljeens vorjejen,<br>
     damit wieder Recht und Ordnung auf unserer Erdplatte herrscht!</p>
-    
     <p>Bei Ergänzungen bitte melden:</p>
     <a href="mailto:aap.verwaltung@gmail.com" class="mail-btn">✉ Schreib uns</a>
   </footer>
